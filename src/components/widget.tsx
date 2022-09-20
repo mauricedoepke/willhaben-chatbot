@@ -6,7 +6,9 @@ import { Message } from "./message";
 const useStyles = makeStyles((theme) => ({
   widget: {
     width: 350,
-    height: 600,
+    height: "100%",
+    maxHeight: 700,
+    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
     display: "flex",
     flexDirection: "column",

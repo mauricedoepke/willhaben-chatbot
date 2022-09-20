@@ -23,11 +23,13 @@ const theme = createTheme({
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    height: "100%",
     position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
+    justifyContent: "flex-end",
     alignItems: "flex-end",
   },
   fab: {
