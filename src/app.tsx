@@ -7,6 +7,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import ChatIcon from "@material-ui/icons/Chat";
+import CloseIcon from "@material-ui/icons/Close";
 import { useState } from "react";
 import { Widget } from "./components/widget";
 
@@ -51,7 +52,7 @@ function App() {
           className={classes.fab}
           focusVisibleClassName={classes.fab}
         >
-          <ChatIcon />
+          {widgetOpen ? <CloseIcon /> : <ChatIcon />}
         </Fab>
       </Box>
     </ThemeProvider>
