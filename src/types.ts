@@ -15,3 +15,8 @@ export interface Message {
   text: string;
   buttons?: { text: string; value: string | number | boolean }[];
 }
+
+export type UserAnswers = {
+  name: string;
+  value: string | number | boolean;
+}[];

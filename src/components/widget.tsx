@@ -1,68 +1,7 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-} from "@material-ui/core";
+import { Avatar, Card, CardContent, CardHeader } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import messageFlow from "../assets/flow.json";
+import { useMessageFlow } from "../flow-logic";
 import { Message } from "./message";
-import { Dictionary, isNumber, keyBy } from "lodash";
-import { useMemo, useState } from "react";
-import { Message as IMessage, MessageFlowElement } from "../types";
-
-const initialMessageId = 100;
-const messageFlowMap: Dictionary<MessageFlowElement> = keyBy(
-  messageFlow,
-  ({ id }) => id
-);
-const flowElementToMessage = (flowElement: MessageFlowElement) => ({
-  templateId: flowElement.id,
-  sender: "bot" as const,
-  text: flowElement.text,
-  buttons: flowElement.valueOptions.map(({ text, value }) => ({ text, value })),
-});
-const getNextMessage = (nextId: number | boolean) => {
-  if (isNumber(nextId)) return flowElementToMessage(messageFlowMap[nextId]);
-  return { sender: "bot" as const, text: "Herzlichen Dank für Ihre Angaben" };
-};
-const useMessageFlow = () => {
-  const [messageHistory, setMessageHistory] = useState<IMessage[]>([
-    flowElementToMessage(messageFlowMap[initialMessageId]),
-  ]);
-  const currentMessage = useMemo(() => messageHistory.at(-1), [messageHistory]);
-
-  const answerMessageQuestion = (value: string | boolean | number) => {
-    const currentFlow = messageFlowMap[currentMessage?.templateId ?? -1];
-    const chosenAnswer = currentFlow.valueOptions.find(
-      (option) => option.value === value
-    );
-
-    if (!chosenAnswer) {
-      setMessageHistory([
-        ...messageHistory,
-        {
-          sender: "bot",
-          text: "Da ist leider etwas schief gelaufe, bitte Kontaktiere unseren Support",
-        },
-      ]);
-      return;
-    }
-
-    setMessageHistory([
-      ...messageHistory.map(({ buttons, ...rest }) => ({ ...rest })),
-      { sender: "user", text: chosenAnswer.text },
-      getNextMessage(chosenAnswer.nextId),
-    ]);
-  };
-
-  return {
-    messages: messageHistory,
-    answerMessageQuestion,
-  };
-};
 
 const useStyles = makeStyles((theme) => ({
   widget: {
@@ -74,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     backgroundColor: theme.palette.primary.main,
+    color: "white",
   },
   messageArea: {
     flexGrow: 1,
@@ -93,12 +33,16 @@ const Widget = () => {
     <Card className={classes.widget} elevation={5}>
       <CardHeader
         className={classes.header}
-        avatar={<Avatar aria-label="recipe">WB</Avatar>}
+        avatar={<Avatar aria-label="Willhaben Bot avatar">WB</Avatar>}
         title="Willhaben Bot"
       />
       <CardContent className={classes.messageArea}>
-        {messages.map((message) => (
-          <Message {...message} onAnswerButtonClick={answerMessageQuestion} />
+        {messages.map((message, i) => (
+          <Message
+            key={i}
+            {...message}
+            onAnswerButtonClick={answerMessageQuestion}
+          />
         ))}
       </CardContent>
     </Card>
