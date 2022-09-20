@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   messageArea: {
     flexGrow: 1,
