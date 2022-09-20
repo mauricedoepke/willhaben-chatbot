@@ -8,7 +8,7 @@ interface ThemeProps {
 
 const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
   messageContainer: ({ isUserMessage }) => ({
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -19,13 +19,12 @@ const useStyles = makeStyles<Theme, ThemeProps>((theme) => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     backgroundColor: isUserMessage ? theme.palette.primary.main : undefined,
-    color: isUserMessage ? theme.palette.background.default : undefined,
+    color: isUserMessage ? "white" : undefined,
   }),
-  buttonContainer: {
-    marginTop: theme.spacing(1),
-  },
   button: {
+    marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    color: "white",
   },
 }));
 
@@ -47,9 +46,10 @@ const Message: React.FC<MessageProps> = ({
         <Box>{text}</Box>
       </Card>
       {buttons && buttons.length > 0 && (
-        <Box className={classes.buttonContainer}>
+        <Box>
           {buttons.map((button) => (
             <Button
+              key={button.value.toString()}
               variant="contained"
               color="primary"
               className={classes.button}
